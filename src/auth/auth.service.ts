@@ -11,13 +11,13 @@ export class AuthService {
     private usersService: UsersService,
     private jwtService: JwtService
   ){}
-  
+
   async signUp(CreatUserDto: CreateUserDto) {
-    const { email,  password } = CreatUserDto;
+    const { email, name,  password } = CreatUserDto;
     const user = await this.usersService.findOne({ email });
     if (user) throw new BadRequestException('User already exists');
     const hashedPass = await bcrypt.hash(password, 10);
-    await this.usersService.create({ email,  password: hashedPass });
+    await this.usersService.create({ email, name,  password: hashedPass });
     return { succes: true, message: 'User registerd succesfully' };
   }
   async signIn(SignInDto: SignInDto) {

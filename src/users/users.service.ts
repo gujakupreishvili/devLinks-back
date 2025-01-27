@@ -1,5 +1,5 @@
-import { Query } from './../../node_modules/sift/lib/core.d';
-import { Injectable } from '@nestjs/common';
+
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/users.schema';
 import { Model } from 'mongoose';
@@ -24,5 +24,13 @@ export class UsersService {
   }
   findByEmail(query){
     return this.userModel.findOne(query).select("+password")
+  }
+  async addPost(userId, linksId){
+    const user = await this.userModel.findById(userId)
+    if (!user) throw new  NotFoundException
+    console.log(user, "user")
+    user.links.push(linksId)
+    const updateUser = await this.userModel.findByIdAndUpdate(userId, user,{new: true})
+    return updateUser
   }
 }

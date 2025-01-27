@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 
 @Schema()
 export class User{
+  @Prop()
+  name:string
   @Prop({unique: true})
   email:string
   @Prop({select:false})

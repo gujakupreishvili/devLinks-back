@@ -17,7 +17,7 @@ export class UsersService {
     return this.userModel.create(creeatUserDto)
   }
   getById(id){
-    return this.userModel.findById(id);
+    return this.userModel.findById(id).populate("links");
   }
   findOne(query){
     return this.userModel.findOne(query);

@@ -20,8 +20,12 @@ export class LinksController {
 
   @Post()
   @UseGuards(AuthGuard)
-  create(@Body() createLinkDto: CreateLinkDto, @Req() request) {
-    return this.linksService.create(createLinkDto, request.userId);
+  async create(@Body() createLinkDtos: CreateLinkDto[], @Req() request) {
+    const userId = request.userId;
+    const savedLinks = await Promise.all(
+      createLinkDtos.map(dto => this.linksService.create(dto, userId)),
+    );
+    return savedLinks;
   }
 
   @Get()

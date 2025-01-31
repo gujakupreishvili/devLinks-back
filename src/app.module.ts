@@ -6,14 +6,16 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { LinksModule } from './links/links.module';
+import { AwsS3Module } from './aws-s3/aws-s3.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({isGlobal:true}),
     MongooseModule.forRoot(process.env.MONGO_URI),
     UsersModule,
     AuthModule,
-    LinksModule
+    LinksModule,
+    AwsS3Module
   ],
   controllers: [AppController],
   providers: [AppService],

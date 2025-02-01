@@ -14,5 +14,10 @@ export class User{
     ref: "Links"
   }])
   links:mongoose.Schema.Types.ObjectId[]
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    ref:"AwsS3"
+  })
+  urlId: mongoose.Schema.Types.ObjectId
 }
 export const UserSchema = SchemaFactory.createForClass(User)

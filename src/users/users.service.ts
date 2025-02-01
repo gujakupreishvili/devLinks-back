@@ -17,7 +17,7 @@ export class UsersService {
     return this.userModel.create(creeatUserDto)
   }
   getById(id){
-    return this.userModel.findById(id).populate("links");
+    return this.userModel.findById(id).populate("links").populate("urlId"); ;
   }
   findOne(query){
     return this.userModel.findOne(query);
@@ -30,6 +30,14 @@ export class UsersService {
     if (!user) throw new  NotFoundException
     console.log(user, "user")
     user.links.push(linksId)
+    const updateUser = await this.userModel.findByIdAndUpdate(userId, user,{new: true})
+    return updateUser
+  }
+  async addUrlId (userId, urlId){
+    const user = await this.userModel.findById(userId)
+    if (!user) throw new  NotFoundException
+    console.log(user, "user")
+    user.urlId=urlId
     const updateUser = await this.userModel.findByIdAndUpdate(userId, user,{new: true})
     return updateUser
   }

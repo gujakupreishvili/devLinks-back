@@ -25,14 +25,19 @@ export class UsersService {
   findByEmail(query){
     return this.userModel.findOne(query).select("+password")
   }
-  async addPost(userId, linksId){
-    const user = await this.userModel.findById(userId)
-    if (!user) throw new  NotFoundException
-    console.log(user, "user")
-    user.links.push(linksId)
-    const updateUser = await this.userModel.findByIdAndUpdate(userId, user,{new: true})
-    return updateUser
-  }
+  async addPost(userId, linksId) {
+    const user = await this.userModel.findById(userId);
+    if (!user) throw new NotFoundException();
+    
+    const updateUser = await this.userModel.findByIdAndUpdate(
+        userId, 
+        { $push: { links: { $each: Array.isArray(linksId) ? linksId : [linksId] } } }, 
+        { new: true }
+    );
+
+    return updateUser;
+}
+
   async addUrlId (userId, urlId){
     const user = await this.userModel.findById(userId)
     if (!user) throw new  NotFoundException
